@@ -14,7 +14,7 @@ class ArtistsPage extends StatefulWidget {
 
 class _ArtistsPageState extends State<ArtistsPage> {
   String jsCode;  
-  var filePath = '/artists.json';  
+  var filePath = 'assets/artists.json';  
 
   Future<void> getDta() async {    
       fetch_file.fetchFileFromAssets(filePath).then((vale){
@@ -35,8 +35,34 @@ class _ArtistsPageState extends State<ArtistsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(child: Column(        
+        children: <Widget>[
+        Container(           
+          height: 50,           
+        ),            
+          ListTile(
+            selectedTileColor: Colors.blue,
+            leading: Icon(Icons.home),
+            title: Text('Home'),            
+            onTap: (){
+              print('ON TAP');
+              Navigator.of(context).pushNamed('/');
+            },
+          ),
+          ListTile(
+            selectedTileColor: Colors.blue,
+            leading: Icon(Icons.article_outlined),
+            title: Text('Artists'),
+            onTap: (){
+              Navigator.of(context).pushNamed('/artists');              
+            },
+          ),                                                         
+        ],        
+        )        
+        ),
       appBar: AppBar(
         title: Text("Artists"),
+        
         //automaticallyImplyLeading: false,
       ),
       body: Column(
