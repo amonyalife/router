@@ -4,7 +4,8 @@ import 'dart:convert';
 
 class ArtistsPage extends StatefulWidget {
   static const routeName = '/artists';
-  static List artists;
+  static List artists= [];
+  
 
   ArtistsPage({Key key}) : super(key: key);
 
@@ -13,8 +14,12 @@ class ArtistsPage extends StatefulWidget {
 }
 
 class _ArtistsPageState extends State<ArtistsPage> {
+  final List listTiles=['Home' 'Artists'];
+  List <bool> isSelected=[false,false];
+  int countS=0;
   String jsCode;  
   var filePath = 'assets/artists.json';  
+
 
   Future<void> getDta() async {    
       fetch_file.fetchFileFromAssets(filePath).then((vale){
@@ -35,30 +40,64 @@ class _ArtistsPageState extends State<ArtistsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(child: Column(        
-        children: <Widget>[
-        Container(           
-          height: 50,           
-        ),            
-          ListTile(
-            selectedTileColor: Colors.blue,
-            leading: Icon(Icons.home),
-            title: Text('Home'),            
-            onTap: (){
-              print('ON TAP');
-              Navigator.of(context).pushNamed('/');
-            },
+      drawer: Drawer(
+        child: Column(      
+            
+          children: <Widget>[
+          SizedBox(           
+            height: 50,           
+          ),     
+          ListView.separated(
+            itemCount: listTiles.length,
+            separatorBuilder: (BuildContext context, int index)=> Divider(height: 1, color: Colors.red),
+            itemBuilder: (BuildContext context, int index)=> ListTile(
+              tileColor: Colors.black,
+              title: Text(listTiles[index]),
+              selectedTileColor: Colors.green,
+              selected: isSelected[index],
+              onLongPress:(){ _upgradeTile(index);
+                setState(() {
+                  
+                });
+              
+              },
+              onTap:
+                     
+                    
+                  countS>=1 ? () {
+                    Navigator.of(context).pushNamed('/artists'); 
+                    _upgradeTile(index);
+                    setState(() {
+                      
+                    });                    
+
+                  }:(){}
+                      
+              ),
+
+                          ),
+         
+            // ListTile(
+            //   selectedTileColor: Colors.blue,
+            //   leading: Icon(Icons.home),
+            //   title: Text('Home'),            
+            //   onTap: (){
+         
+            //     print('ON TAP');
+            //     Navigator.of(context).pushNamed('/');
+            //   },
+            // ),
+            // ListTile(
+            //   selectedTileColor: Colors.blue,
+            //   leading: Icon(Icons.article_outlined),
+            //   title: Text('Artists'),
+            //   onTap: (){
+            //     Navigator.of(context).pushNamed('/artists');              
+            //   },
+            // ),                                                         
+          ],        
           ),
-          ListTile(
-            selectedTileColor: Colors.blue,
-            leading: Icon(Icons.article_outlined),
-            title: Text('Artists'),
-            onTap: (){
-              Navigator.of(context).pushNamed('/artists');              
-            },
-          ),                                                         
-        ],        
-        )        
+              
         ),
       appBar: AppBar(
         title: Text("Artists"),
@@ -97,4 +136,16 @@ class _ArtistsPageState extends State<ArtistsPage> {
       )
     );
   }
-}
+  _upgradeTile(int index){
+   if (isSelected[index]==true){
+          isSelected[index]=false;
+          --countS;
+          }
+          else{
+             isSelected[index]=true;
+             ++countS;
+          }
+   }
+  }
+
+
